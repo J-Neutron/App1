@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
     ImageAdapter imageAdapter;
     private RecyclerView recyclerAlbumList, recyclerImageList, selectedimages;
     private ArrayList<ImageSelected> previewActivities;
+    private ArrayList<ImageSelected> temp;
     Handler handler;
     String name, album_name;
     public static TextView iv_image_count;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
             MediaStore.Images.Media.BUCKET_ID,
             MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
             MediaStore.Images.Media.DATA};
-    private ImageView btn_done, btn_back;
+    ImageView btn_done, btn_back;
     public int final_limit,selection;
     private boolean album_exists = false;
     private KProgressHUD kProgressHUD;
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
         }
 
 
-        /*btn_done.setOnClickListener(new View.OnClickListener() {
+        btn_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (Bildbekommen.main_list != null && Bildbekommen.main_list.size() != 0) {
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
             public void onClick(View view) {
                 onBackPressed();
             }
-        });*/
+        });
 
 
 
@@ -196,7 +197,8 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
         }
         album_name = name;
         Toast.makeText(this, "" + name, Toast.LENGTH_SHORT).show();
-        albumImages();
+        //albumImages();
+        new getImages().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private class getData extends AsyncTask<Void, Void, Void> {
@@ -206,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
             kProgressHUD = KProgressHUD.create(MainActivity.this)
                     .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                     .setLabel("Please wait")
-                    .setDetailsLabel("Downloading data")
+                    .setDetailsLabel("Fetching data")
                     .setCancellable(false)
                     .setAnimationSpeed(2)
                     .setDimAmount(0.5f)
@@ -221,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
             Cursor cursor = getApplicationContext().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, MediaStore.Images.Media.DATE_ADDED);
 
             File file;
-            if (cursor.moveToFirst()) {
+            if (cursor.moveToLast()) {
                 do {
                     long albumId = cursor.getLong(cursor.getColumnIndex(projection[0]));
                     String album = cursor.getString(cursor.getColumnIndex(projection[1]));
@@ -239,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
                         }
                     } else {
                     }
-                } while (cursor.moveToNext());
+                } while (cursor.moveToPrevious());
             }
             return null;
         }
@@ -290,58 +292,80 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
         }
     }
 
-    public void albumImages() {
-        File file;
-        HashSet<Long> selectedImages = new HashSet<>();
-        if (this.previewActivities != null) {
-            ImageSelected imageSelected;
-            for (int i = 0, l = this.previewActivities.size(); i < l; i++) {
-                imageSelected = this.previewActivities.get(i);
-                file = new File(imageSelected.path);
-                if (file.exists() && imageSelected.isSelected) {
-                    selectedImages.add(imageSelected.id);
+
+    private class getImages extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            kProgressHUD = KProgressHUD.create(MainActivity.this)
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setLabel("Please wait")
+                    .setDetailsLabel("Fetching data")
+                    .setCancellable(false)
+                    .setAnimationSpeed(2)
+                    .setDimAmount(0.5f)
+                    .show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            File file;
+            HashSet<Long> selectedImages = new HashSet<>();
+            if (previewActivities != null) {
+                ImageSelected imageSelected;
+                for (int i = 0, l = previewActivities.size(); i < l; i++) {
+                    imageSelected = previewActivities.get(i);
+                    file = new File(imageSelected.path);
+                    if (file.exists() && imageSelected.isSelected) {
+                        selectedImages.add(imageSelected.id);
+                    }
                 }
             }
-        }
-        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
-                MediaStore.Images.Media.BUCKET_DISPLAY_NAME + " =?", new String[]{name}, MediaStore.Images.Media.DATE_ADDED);
-        ArrayList<ImageSelected> temp = new ArrayList<>(cursor.getCount());
-        if (cursor.moveToLast()) {
-            do {
-                if (Thread.interrupted()) {
-                    return;
-                }
-                long id = cursor.getLong(cursor.getColumnIndex(projection[0]));
-                String selectedName = cursor.getString(cursor.getColumnIndex(projection[1]));
-                String path = cursor.getString(cursor.getColumnIndex(projection[2]));
-                boolean isSelected = selectedImages.contains(id);
-                File file1 = new File(path);
-                album_name = file1.getName();
-                file = new File(path);
-                if (file.exists()) {
-                    Log.e("asdqwdadasda",""+id +"\t\t"+ album_name +"\t\t"+ selectedName +"\t\t"+ path +"\t\t"+ isSelected);
-                    temp.add(new ImageSelected(id, album_name, selectedName, path, isSelected));
-                }
+            Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
+                    MediaStore.Images.Media.BUCKET_DISPLAY_NAME + " =?", new String[]{name}, MediaStore.Images.Media.DATE_ADDED);
+            temp = new ArrayList<>(cursor.getCount());
+            if (cursor.moveToLast()) {
+                do {
+                    if (Thread.interrupted()) {
+                        return null;
+                    }
+                    long id = cursor.getLong(cursor.getColumnIndex(projection[0]));
+                    String selectedName = cursor.getString(cursor.getColumnIndex(projection[1]));
+                    String path = cursor.getString(cursor.getColumnIndex(projection[2]));
+                    boolean isSelected = selectedImages.contains(id);
+                    File file1 = new File(path);
+                    album_name = file1.getName();
+                    file = new File(path);
+                    if (file.exists()) {
+                        temp.add(new ImageSelected(id, album_name, selectedName, path, isSelected));
+                    }
 
-            } while (cursor.moveToPrevious());
+                } while (cursor.moveToPrevious());
+            }
+            cursor.close();
+            return null;
         }
-        cursor.close();
-        if (this.previewActivities == null) {
-            this.previewActivities = new ArrayList<>();
-        }
-        this.previewActivities.clear();
-        this.previewActivities.addAll(temp);
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            kProgressHUD.dismiss();
+            if (previewActivities == null) {
+                previewActivities = new ArrayList<>();
+            }
+            previewActivities.clear();
+            previewActivities.addAll(temp);
 
-        if (this.previewActivities != null) {
-            recyclerImageList = findViewById(R.id.imagelist);
-            recyclerImageList.setHasFixedSize(true);
-            recyclerImageList.setLayoutManager(new GridLayoutManager(this, 2));
-            imageAdapter = new ImageAdapter(MainActivity.this, this.previewActivities, final_limit);
-            recyclerImageList.setAdapter(imageAdapter);
-            recyclerImageList.setVisibility(View.VISIBLE);
+            if (previewActivities != null) {
+                recyclerImageList = findViewById(R.id.imagelist);
+                recyclerImageList.setHasFixedSize(true);
+                recyclerImageList.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+                imageAdapter = new ImageAdapter(MainActivity.this, previewActivities, final_limit);
+                recyclerImageList.setAdapter(imageAdapter);
+                recyclerImageList.setVisibility(View.VISIBLE);
 
-        } else {
-            imageAdapter.notifyDataSetChanged();
+            } else {
+                imageAdapter.notifyDataSetChanged();
+            }
         }
     }
 

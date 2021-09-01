@@ -1,0 +1,3 @@
+include ':bildbekommen'//include ':bildbekommen'
+include ':app'
+//rootProject.name = "GalleryApp"

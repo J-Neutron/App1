@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#5D6DBE</color>
+    <color name="colorPrimaryDark">#5D6DBE</color>
+    <color name="colorAccent">#5D6DBE</color>
+
+    <color name="trans">#00000000</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="yellow">#FFEB3B</color>
+    <color name="bgcolor">#F0F0F1</color>
+
+    <color name="songduration">#222222</color>
+
+    <color name="statusbar">#d32f2f</color>
+    <color name="appbar">#e53935</color>
+    <color name="blur">#00FFFFFF</color>
+
+    <color name="background">#e5dddd</color>
+
+    <color name="header_bg_color">#BABAB8</color>
+    <color name="header_txt_color">#1f2629</color>
+
+    <color name="blue_light">#0F793B</color>
+    <color name="red_light">#BCBCBC</color>
+    <color name="cyan_light">#5D6DBE</color>
+</resources>

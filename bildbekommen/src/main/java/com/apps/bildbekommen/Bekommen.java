@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import static com.apps.bildbekommen.bildbekommen.Bildbekommen.activityss;
 
-public class Bekommen extends AppCompatActivity implements ItemSelectedListener {
+public class Bekommen extends HelperActivity implements ItemSelectedListener {
     private ArrayList<ImageAlbum> buckets;
     ImageAlbumAdapter imagealbumadapter;
     SelectedImageListAdapter selectedImageListAdapter;
@@ -69,6 +69,7 @@ public class Bekommen extends AppCompatActivity implements ItemSelectedListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setView(findViewById(R.id.main_layout));
         btn_done = findViewById(R.id.btn_done);
         btn_back = findViewById(R.id.btn_back);
         main_layout = findViewById(R.id.main_layout);

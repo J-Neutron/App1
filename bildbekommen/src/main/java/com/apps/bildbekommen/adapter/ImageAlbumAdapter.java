@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.apps.bildbekommen.MainActivity;
+import com.apps.bildbekommen.Bekommen;
 import com.apps.bildbekommen.R;
 import com.apps.bildbekommen.model.ImageAlbum;
 import com.bumptech.glide.Glide;
@@ -48,7 +48,7 @@ public class ImageAlbumAdapter extends RecyclerView.Adapter<ImageAlbumAdapter.Vi
             @Override
             public void onClick(View view) {
                 index = position;
-                ((MainActivity)context).onAlbumListImageClick(position);
+                ((Bekommen)context).onAlbumListImageClick(position);
                 notifyDataSetChanged();
                 notifyItemRangeChanged(position, album_list.size());
             }
@@ -57,7 +57,7 @@ public class ImageAlbumAdapter extends RecyclerView.Adapter<ImageAlbumAdapter.Vi
         if (first_select == 0)
         {
             first_select = -1;
-            ((MainActivity)context).onAlbumListImageClick(position);
+            ((Bekommen)context).onAlbumListImageClick(position);
             holder.selecttion.setVisibility(View.VISIBLE);
             holder.iv_selectedimg.setVisibility(View.VISIBLE);
             index = 0;

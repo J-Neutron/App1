@@ -24,7 +24,7 @@ public class Bildbekommen {
         activityss = activity;
         Intent intent = null;
         try {
-            intent = new Intent(activity, Class.forName("com.apps.bildbekommen.MainActivity"));
+            intent = new Intent(activity, Class.forName("com.apps.bildbekommen.Bekommen"));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -52,7 +52,7 @@ public class Bildbekommen {
             activityss = activity;
             Intent intent = null;
             try {
-                intent = new Intent(activity, Class.forName("com.apps.bildbekommen.MainActivity"));
+                intent = new Intent(activity, Class.forName("com.apps.bildbekommen.Bekommen"));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -73,7 +73,7 @@ public class Bildbekommen {
             Intent intent = null;
 
             try {
-                intent = new Intent(activity, Class.forName("com.apps.bildbekommen.MainActivity"));
+                intent = new Intent(activity, Class.forName("com.apps.bildbekommen.Bekommen"));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -100,7 +100,7 @@ public class Bildbekommen {
                 activityss = activity;
                 Intent intent = null;
                 try {
-                    intent = new Intent(activity, Class.forName("com.apps.bildbekommen.MainActivity"));
+                    intent = new Intent(activity, Class.forName("com.apps.bildbekommen.Bekommen"));
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }

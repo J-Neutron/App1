@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.apps.bildbekommen.MainActivity;
+import com.apps.bildbekommen.Bekommen;
 import com.apps.bildbekommen.R;
 import com.bumptech.glide.Glide;
 
@@ -46,7 +46,7 @@ public class SelectedImageListAdapter extends RecyclerView.Adapter<SelectedImage
                 if (main_list.size() != 0) {
                     if (main_list.contains(list.get(position))) {
                         main_list.remove(list.get(position));
-                        ((MainActivity)context).deleteImage(position);
+                        ((Bekommen)context).deleteImage(position);
                         notifyDataSetChanged();
                     }
                 }

@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import static com.apps.bildbekommen.bildbekommen.Bildbekommen.activityss;
 
-public class MainActivity extends AppCompatActivity implements ItemSelectedListener {
+public class Bekommen extends AppCompatActivity implements ItemSelectedListener {
     private ArrayList<ImageAlbum> buckets;
     ImageAlbumAdapter imagealbumadapter;
     SelectedImageListAdapter selectedImageListAdapter;
@@ -58,11 +58,11 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
     private RelativeLayout main_layout;
     Activity activitys;
 
-    public MainActivity(Activity activity) {
+    public Bekommen(Activity activity) {
         activitys = activity;
     }
 
-    public MainActivity() {
+    public Bekommen() {
 
     }
     @Override
@@ -107,12 +107,12 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
             @Override
             public void onClick(View view) {
                 if (Bildbekommen.main_list != null && Bildbekommen.main_list.size() != 0) {
-                    Intent i = new Intent(MainActivity.this, activitys.getClass());
+                    Intent i = new Intent(Bekommen.this, activitys.getClass());
                     i.putStringArrayListExtra("album_images_layout", Bildbekommen.main_list);
                     setResult(RESULT_OK, i);
                     finish();
                 } else {
-                    Toast.makeText(MainActivity.this, "Please select some previewActivities", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Bekommen.this, "Please select some previewActivities", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
             @Override
             public void onDenied(Context context, ArrayList<String> deniedPermissions) {
                 main_layout.setVisibility(View.GONE);
-                Intent i = new Intent(MainActivity.this, activitys.getClass());
+                Intent i = new Intent(Bekommen.this, activitys.getClass());
                 startActivity(i);
                 finish();
             }
@@ -157,9 +157,9 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
         if (Bildbekommen.main_list != null) {
 
             selectedimages.setHasFixedSize(true);
-            LinearLayoutManager HorizontalLayout = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
+            LinearLayoutManager HorizontalLayout = new LinearLayoutManager(Bekommen.this, LinearLayoutManager.HORIZONTAL, false);
             selectedimages.setLayoutManager(HorizontalLayout);
-            selectedImageListAdapter = new SelectedImageListAdapter(MainActivity.this, Bildbekommen.main_list);
+            selectedImageListAdapter = new SelectedImageListAdapter(Bekommen.this, Bildbekommen.main_list);
             selectedimages.setAdapter(selectedImageListAdapter);
             iv_image_count.setText(String.valueOf(Bildbekommen.main_list.size()));
         } else {
@@ -171,9 +171,9 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
     public void unSelect() {
         if (Bildbekommen.main_list != null) {
             selectedimages.setHasFixedSize(true);
-            LinearLayoutManager HorizontalLayout = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
+            LinearLayoutManager HorizontalLayout = new LinearLayoutManager(Bekommen.this, LinearLayoutManager.HORIZONTAL, false);
             selectedimages.setLayoutManager(HorizontalLayout);
-            selectedImageListAdapter = new SelectedImageListAdapter(MainActivity.this, Bildbekommen.main_list);
+            selectedImageListAdapter = new SelectedImageListAdapter(Bekommen.this, Bildbekommen.main_list);
             selectedimages.setAdapter(selectedImageListAdapter);
             iv_image_count.setText(String.valueOf(Bildbekommen.main_list.size()));
         } else {
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            kProgressHUD = KProgressHUD.create(MainActivity.this)
+            kProgressHUD = KProgressHUD.create(Bekommen.this)
                     .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                     .setLabel("Please wait")
                     .setDetailsLabel("Fetching data")
@@ -255,36 +255,36 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
                 album_exists = true;
                 recyclerAlbumList = findViewById(R.id.albumlist);
                 recyclerAlbumList.setHasFixedSize(true);
-                recyclerAlbumList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-                imagealbumadapter = new ImageAlbumAdapter(MainActivity.this, buckets);
+                recyclerAlbumList.setLayoutManager(new LinearLayoutManager(Bekommen.this));
+                imagealbumadapter = new ImageAlbumAdapter(Bekommen.this, buckets);
                 recyclerAlbumList.setAdapter(imagealbumadapter);
                 recyclerAlbumList.setVisibility(View.VISIBLE);
 
             } else {
                 main_layout.setVisibility(View.GONE);
-                Intent i = new Intent(MainActivity.this, activitys.getClass());
+                Intent i = new Intent(Bekommen.this, activitys.getClass());
                 startActivity(i);
                 finish();
                 album_exists = false;
-                Toast.makeText(MainActivity.this, "Album not found", Toast.LENGTH_LONG).show();
+                Toast.makeText(Bekommen.this, "Album not found", Toast.LENGTH_LONG).show();
             }
 
             if (album_exists == true)
             {
                 if (Bildbekommen.main_list != null) {
                     selectedimages.setHasFixedSize(true);
-                    LinearLayoutManager HorizontalLayout = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
+                    LinearLayoutManager HorizontalLayout = new LinearLayoutManager(Bekommen.this, LinearLayoutManager.HORIZONTAL, false);
                     selectedimages.setLayoutManager(HorizontalLayout);
-                    selectedImageListAdapter = new SelectedImageListAdapter(MainActivity.this, Bildbekommen.main_list);
+                    selectedImageListAdapter = new SelectedImageListAdapter(Bekommen.this, Bildbekommen.main_list);
                     selectedimages.setAdapter(selectedImageListAdapter);
                     iv_image_count.setText(String.valueOf(Bildbekommen.main_list.size()));
                 }
                 else if (main_list_copy != null)
                 {
                     selectedimages.setHasFixedSize(true);
-                    LinearLayoutManager HorizontalLayout = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
+                    LinearLayoutManager HorizontalLayout = new LinearLayoutManager(Bekommen.this, LinearLayoutManager.HORIZONTAL, false);
                     selectedimages.setLayoutManager(HorizontalLayout);
-                    selectedImageListAdapter = new SelectedImageListAdapter(MainActivity.this, main_list_copy);
+                    selectedImageListAdapter = new SelectedImageListAdapter(Bekommen.this, main_list_copy);
                     selectedimages.setAdapter(selectedImageListAdapter);
                     iv_image_count.setText(String.valueOf(main_list_copy.size()));
                 }
@@ -297,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            kProgressHUD = KProgressHUD.create(MainActivity.this)
+            kProgressHUD = KProgressHUD.create(Bekommen.this)
                     .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                     .setLabel("Please wait")
                     .setDetailsLabel("Fetching data")
@@ -358,8 +358,8 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
             if (previewActivities != null) {
                 recyclerImageList = findViewById(R.id.imagelist);
                 recyclerImageList.setHasFixedSize(true);
-                recyclerImageList.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
-                imageAdapter = new ImageAdapter(MainActivity.this, previewActivities, final_limit);
+                recyclerImageList.setLayoutManager(new GridLayoutManager(Bekommen.this, 2));
+                imageAdapter = new ImageAdapter(Bekommen.this, previewActivities, final_limit);
                 recyclerImageList.setAdapter(imageAdapter);
                 recyclerImageList.setVisibility(View.VISIBLE);
 
@@ -376,7 +376,7 @@ public class MainActivity extends AppCompatActivity implements ItemSelectedListe
         {
             Bildbekommen.main_list.add(main_list_copy.get(j));
         }
-        Intent i = new Intent(MainActivity.this, activitys.getClass());
+        Intent i = new Intent(Bekommen.this, activitys.getClass());
         i.putStringArrayListExtra("album_images_layout", main_list_copy);
         setResult(RESULT_OK, i);
         finish();

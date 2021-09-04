@@ -3,7 +3,7 @@
     package="com.apps.bildbekommen">
 
     <application>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".Bekommen"></activity>
     </application>
 
 </manifest>

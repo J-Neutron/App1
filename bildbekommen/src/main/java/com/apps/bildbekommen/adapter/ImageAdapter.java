@@ -15,7 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.apps.bildbekommen.MainActivity;
+import com.apps.bildbekommen.Bekommen;
 import com.apps.bildbekommen.R;
 import com.apps.bildbekommen.model.ImageSelected;
 import com.bumptech.glide.Glide;
@@ -103,7 +103,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         if (isContained) {
             main_list.remove(image);
             updateRadioButton(false, holder);
-            ((MainActivity)context).unSelect();
+            ((Bekommen)context).unSelect();
         } else {
             if (limitselected == true) {
                 if (final_limit == main_list.size()) {
@@ -112,12 +112,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                 } else {
                     main_list.add(image);
                     updateRadioButton(true, holder);
-                    ((MainActivity) context).selecte();
+                    ((Bekommen) context).selecte();
                 }
             }else{
                 main_list.add(image);
                 updateRadioButton(true, holder);
-                ((MainActivity)context).selecte();
+                ((Bekommen)context).selecte();
             }
         }
     }

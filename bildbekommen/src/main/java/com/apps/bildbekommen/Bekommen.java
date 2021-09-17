@@ -104,28 +104,42 @@ public class Bekommen extends HelperActivity implements ItemSelectedListener {
         }
 
 
-        btn_done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Bildbekommen.main_list != null && Bildbekommen.main_list.size() != 0) {
-                    Intent i = new Intent(Bekommen.this, activitys.getClass());
-                    i.putStringArrayListExtra("album_images_layout", Bildbekommen.main_list);
-                    setResult(RESULT_OK, i);
-                    finish();
-                } else {
-                    Toast.makeText(Bekommen.this, "Please select some previewActivities", Toast.LENGTH_SHORT).show();
+        try {
+            btn_done.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (Bildbekommen.main_list != null && Bildbekommen.main_list.size() != 0) {
+                        Intent i = new Intent(Bekommen.this, activitys.getClass());
+                        i.putStringArrayListExtra("album_images_layout", Bildbekommen.main_list);
+                        setResult(RESULT_OK, i);
+                        finish();
+                    } else {
+                        Toast.makeText(Bekommen.this, "Please select some previewActivities", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
 
 
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+            btn_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(activitys, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
+
+        try {
+
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(activitys, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
 
         Permissions.check(this, permissions, rationale, options, new PermissionHandler() {
@@ -136,10 +150,16 @@ public class Bekommen extends HelperActivity implements ItemSelectedListener {
 
             @Override
             public void onDenied(Context context, ArrayList<String> deniedPermissions) {
-                main_layout.setVisibility(View.GONE);
-                Intent i = new Intent(Bekommen.this, activitys.getClass());
-                startActivity(i);
-                finish();
+                try {
+                    main_layout.setVisibility(View.GONE);
+                    Intent i = new Intent(Bekommen.this, activitys.getClass());
+                    startActivity(i);
+                    finish();
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(activitys, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -252,7 +272,14 @@ public class Bekommen extends HelperActivity implements ItemSelectedListener {
             super.onPostExecute(aVoid);
             kProgressHUD.dismiss();
             if (buckets != null && buckets.size() != 0) {
-                main_layout.setVisibility(View.VISIBLE);
+                try {
+                    main_layout.setVisibility(View.VISIBLE);
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(activitys, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
                 album_exists = true;
                 recyclerAlbumList = findViewById(R.id.albumlist);
                 recyclerAlbumList.setHasFixedSize(true);
@@ -262,7 +289,14 @@ public class Bekommen extends HelperActivity implements ItemSelectedListener {
                 recyclerAlbumList.setVisibility(View.VISIBLE);
 
             } else {
-                main_layout.setVisibility(View.GONE);
+                try {
+                    main_layout.setVisibility(View.GONE);
+                }
+                catch (Exception e)
+                {
+                    Toast.makeText(activitys, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
                 Intent i = new Intent(Bekommen.this, activitys.getClass());
                 startActivity(i);
                 finish();
